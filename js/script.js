@@ -126,7 +126,7 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // const modalTimeId = setTimeout(openModal, 10000); // отобажает модуль через 10 сек.
+  const modalTimeId = setTimeout(openModal, 10000); // отобажает модуль через 10 сек.
 
   function showModalByScrol() {
     if (
@@ -142,12 +142,13 @@ window.addEventListener("DOMContentLoaded", () => {
 
   // menu card Class
   class MenuCard {
-    constructor(src, alt, title, descr, price, parentSelector) {
+    constructor(src, alt, title, descr, price, parentSelector, ...classes) {
       this.src = src;
       this.alt = alt;
       this.title = title;
       this.desrc = descr;
       this.price = price;
+      this.classes = classes;
       this.parent = document.querySelector(parentSelector);
       this.transfer = 37;
       this.changeToUAH();
@@ -159,8 +160,15 @@ window.addEventListener("DOMContentLoaded", () => {
 
     render() {
       const element = document.createElement("div");
+
+      if (this.classes.length === 0) {
+        this.classes = "menu__item";
+        element.classList.add(this.classes);
+      } else {
+        this.classes.forEach((className) => element.classList.add(className));
+      }
+
       element.innerHTML = `
-      <div class="menu__item">
             <img src=${this.src} alt=${this.alt} />
             <h3 class="menu__item-subtitle">${this.title}</h3>
             <div class="menu__item-descr">${this.desrc}</div>
@@ -169,7 +177,6 @@ window.addEventListener("DOMContentLoaded", () => {
               <div class="menu__item-cost">Цена:</div>
               <div class="menu__item-total"><span>${this.price}</span> грн/день</div>
             </div>
-          </div>
       `;
       this.parent.append(element);
     }
